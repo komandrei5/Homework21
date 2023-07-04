@@ -3,7 +3,6 @@ package game;
 import game.dto.Player;
 import game.service.Play;
 
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -18,29 +17,47 @@ public class Main {
         Player player = new Player(name);
         Play play = new Play();
 
-
         for (int i = 0; i < numberOfGames; i++) {
             System.out.println("Game " + (i + 1));
+            int choice;
+            int playerChoice;
 
-            int playerChoice = play.getPlayerChoice(scanner);
-            if (playerChoice == -1) {
+            do {
+                System.out.println("Choose an option:");
+                System.out.println("1. Rock");
+                System.out.println("2. Scissors");
+                System.out.println("3. Paper");
+                System.out.println("0. Quit the game");
+
+                choice = scanner.nextInt();
+                playerChoice = play.getPlayerChoice(choice);
+
+                if (playerChoice == -2) {
+                    System.out.println("Invalid choice. Please try again.");
+                }
+            } while (playerChoice == -2);
+            if (playerChoice == -1)
                 break;
-            }
 
             int computerChoice = play.generateComputerChoice();
             System.out.println("Your choice: " + play.getChoiceName(playerChoice));
             System.out.println("Computer's choice: " + play.getChoiceName(computerChoice));
 
-            int result = play.determineWinner(playerChoice, computerChoice);
-            if (result == 1) {
-                System.out.println("You win!");
-                player.incrementWins();
-            } else if (result == -1) {
-                System.out.println("You lose!");
-                player.incrementLosses();
-            } else {
-                System.out.println("It's a tie!");
+            String result = play.determineWinner(playerChoice, computerChoice);
+            System.out.println(result);
+
+            switch (result) {
+                case "Draw":
+                    player.incrementDrawGamePlayed();
+                    break;
+                case "Player":
+                    player.incrementWins();
+                    break;
+                case "Computer":
+                    player.incrementLosses();
+                    break;
             }
+
             player.incrementTotalGames();
 
             System.out.println();

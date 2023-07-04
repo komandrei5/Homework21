@@ -28,6 +28,7 @@ public class Player {
     public void incrementLosses() {
         losses++;
     }
+    public void incrementDrawGamePlayed() {drawGamePlayed++;}
 
     public String getPlayerResult() {
         return "Game Results: \n" + "Player " + name + " win " + wins + " games from " + totalGames +
